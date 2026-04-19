@@ -12,7 +12,7 @@
     <Project Path="RetailPlatform.Cart.Infrastructure/RetailPlatform.Carts.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/src/Shared/">
-    <Project Path="../RetailPlatform.Shared.Primitives/RetailPlatform.Shared.Primitives.csproj" Id="b5c2b2bf-294a-468c-b920-cd85bd848850" />
+    <Project Path="RetailPlatform.Shared.Primitives/RetailPlatform.Shared.Primitives.csproj" Id="b5c2b2bf-294a-468c-b920-cd85bd848850" />
   </Folder>
   <Folder Name="/tests/" />
   <Project Path="docker-compose.dcproj">
