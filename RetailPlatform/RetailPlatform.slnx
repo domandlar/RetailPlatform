@@ -13,4 +13,7 @@
   </Folder>
   <Folder Name="/src/Shared/" />
   <Folder Name="/tests/" />
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

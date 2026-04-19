@@ -1,0 +1,6 @@
+services:
+  retailplatform.api:
+    image: ${DOCKER_REGISTRY-}retailplatformapi
+    build:
+      context: .
+      dockerfile: RetailSolution.API/Dockerfile
