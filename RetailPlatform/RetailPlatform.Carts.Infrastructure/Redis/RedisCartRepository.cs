@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RetailPlatform.Carts.Domain.Entities;
 using RetailPlatform.Carts.Domain.Repositories;
 using StackExchange.Redis;
-using System.Text.Json;
 
 namespace RetailPlatform.Carts.Infrastructure.Redis;
 
@@ -12,6 +12,8 @@ internal class RedisCartRepository : ICartRepository
     private readonly IDatabase _db;
     private readonly TimeSpan _ttl;
     private readonly ILogger<RedisCartRepository> _logger;
+
+    private static string CartKey(string userId) => $"cart:{userId}";
 
     public RedisCartRepository(
         IConnectionMultiplexer redis,
@@ -24,22 +26,31 @@ internal class RedisCartRepository : ICartRepository
         _logger = logger;
     }
 
-    public Task DeleteAsync(string userId, CancellationToken ct = default)
+    public async Task DeleteAsync(string userId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _db.KeyDeleteAsync(CartKey(userId));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete cart for user {UserId}", userId);
+            throw;
+        }
     }
 
     public async Task<Cart?> GetAsync(string userId, CancellationToken ct = default)
     {
         try
         {
-            var value = await _db.StringGetAsync($"cart:{userId}");
+            var value = await _db.StringGetAsync(CartKey(userId));
             if (value.IsNullOrEmpty)
             {
                 return null;
             }
 
-            return JsonSerializer.Deserialize<Cart>(value!.ToString());
+            // Disambiguate overload by providing a string explicitly
+            return JsonConvert.DeserializeObject<Cart>(value.ToString());
         }
         catch (Exception ex)
         {
@@ -52,8 +63,8 @@ internal class RedisCartRepository : ICartRepository
     {
         try
         {
-            var json = JsonSerializer.Serialize(cart);
-            await _db.StringSetAsync($"cart:{cart.UserId}", json, _ttl);
+            var json = System.Text.Json.JsonSerializer.Serialize(cart);
+            await _db.StringSetAsync(CartKey(cart.UserId), json, _ttl);
         }
         catch (Exception ex)
         {

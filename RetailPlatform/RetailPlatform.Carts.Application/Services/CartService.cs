@@ -80,10 +80,16 @@ public class CartService : ICartService
     public async Task<bool> RemoveItemAsync(string userId, Guid productId, CancellationToken ct = default)
     {
         var cart = await _repository.GetAsync(userId, ct);
-        if (cart is null) return false;
+        if (cart is null)
+        {
+            return false;
+        }
 
         var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
-        if (item is null) return false;
+        if (item is null)
+        {
+            return false;
+        }
 
         cart.Items.Remove(item);
         await _repository.SaveAsync(cart, ct);
@@ -93,7 +99,10 @@ public class CartService : ICartService
     public async Task<bool> ClearCartAsync(string userId, CancellationToken ct = default)
     {
         var cart = await _repository.GetAsync(userId, ct);
-        if (cart is null) return false;
+        if (cart is null)
+        {
+            return false;
+        }
 
         await _repository.DeleteAsync(userId, ct);
         return true;
