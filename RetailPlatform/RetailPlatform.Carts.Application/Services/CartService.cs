@@ -10,9 +10,10 @@ public class CartService : ICartService
     private readonly ICartRepository _repository;
     private readonly ILogger<CartService> _logger;
 
-    public CartService(ICartRepository repo)
+    public CartService(ICartRepository repo, ILogger<CartService> logger)
     {
         _repository = repo;
+        _logger = logger;
     }
 
     public Task<Cart?> GetCartAsync(string userId, CancellationToken ct = default)
