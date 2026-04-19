@@ -1,4 +1,5 @@
-﻿using RetailPlatform.Carts.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using RetailPlatform.Carts.Domain.Entities;
 using RetailPlatform.Carts.Domain.Repositories;
 using RetailPlatform.Carts.Domain.Services;
 
@@ -7,6 +8,7 @@ namespace RetailPlatform.Carts.Application.Services;
 public class CartService : ICartService
 {
     private readonly ICartRepository _repository;
+    private readonly ILogger<CartService> _logger;
 
     public CartService(ICartRepository repo)
     {
@@ -47,6 +49,7 @@ public class CartService : ICartService
         }
 
         await _repository.SaveAsync(cart, ct);
+        _logger.LogInformation("Added item {ProductId} to cart for user {UserId}", productId, userId);
         return cart;
     }
 
@@ -74,6 +77,8 @@ public class CartService : ICartService
         }
 
         await _repository.SaveAsync(cart, ct);
+
+        _logger.LogInformation("Updated item {ProductId} quantity to {Quantity} in cart for user {UserId}", productId, quantity, userId);
         return cart;
     }
 
@@ -93,6 +98,8 @@ public class CartService : ICartService
 
         cart.Items.Remove(item);
         await _repository.SaveAsync(cart, ct);
+
+        _logger.LogInformation("Removed item {ProductId} from cart for user {UserId}", productId, userId);
         return true;
     }
 
@@ -105,6 +112,8 @@ public class CartService : ICartService
         }
 
         await _repository.DeleteAsync(userId, ct);
+
+        _logger.LogInformation("Cleared cart for user {UserId}", userId);
         return true;
     }
 }
