@@ -13,16 +13,16 @@ internal class RedisCartRepository : ICartRepository
     private readonly TimeSpan _ttl;
     private readonly ILogger<RedisCartRepository> _logger;
 
-    //public RedisCartRepository(
-    //    IConnectionMultiplexer redis,
-    //    IConfiguration configuration,
-    //    ILogger<RedisCartRepository> logger)
-    //{
-    //    var ttlInMinutes = int.Parse(configuration.GetSection("Redis")["CartTtlMinutes"]);
-    //    _db = redis.GetDatabase();
-    //    _ttl = TimeSpan.FromMinutes(ttlInMinutes);
-    //    _logger = logger;
-    //}
+    public RedisCartRepository(
+        IConnectionMultiplexer redis,
+        IConfiguration configuration,
+        ILogger<RedisCartRepository> logger)
+    {
+        var ttlInMinutes = int.Parse(configuration.GetSection("Redis")["CartTtlMinutes"]);
+        _db = redis.GetDatabase();
+        _ttl = TimeSpan.FromMinutes(ttlInMinutes);
+        _logger = logger;
+    }
 
     public Task DeleteAsync(string userId, CancellationToken ct = default)
     {

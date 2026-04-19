@@ -9,6 +9,7 @@ services:
       context: .
       dockerfile: RetailSolution.API/Dockerfile
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Redis=redis:6379
     depends_on:
       redis:

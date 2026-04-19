@@ -13,16 +13,10 @@ public static class DependencyInjection
         var connectionString = configuration.GetSection("Redis")["ConnectionString"]
             ?? throw new InvalidOperationException("Redis ConnectionString is missing.");
 
-        //services.AddSingleton<IConnectionMultiplexer>(sp =>
-        //{
-        //    var config = ConfigurationOptions.Parse(connectionString);
-        //    config.AbortOnConnectFail = false;
-        //    config.ConnectRetry = 3;
-        //    config.ConnectTimeout = 5000;
-        //    return ConnectionMultiplexer.Connect(config);
-        //});
 
-        //services.AddScoped<ICartRepository, RedisCartRepository>();
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+            ConnectionMultiplexer.Connect(connectionString));
+        services.AddScoped<ICartRepository, RedisCartRepository>();
         return services;
     }
 }
