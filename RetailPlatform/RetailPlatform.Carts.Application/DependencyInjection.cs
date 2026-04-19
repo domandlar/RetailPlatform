@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RetailPlatform.Carts.Application.Services;
+using RetailPlatform.Carts.Domain.Services;
 
 namespace RetailPlatform.Carts.Application;
 

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using RetailPlatform.Carts.Application.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using RetailPlatform.Carts.Application.Contracts;
+using RetailPlatform.Carts.Domain.Services;
 
 namespace RetailPlatform.API.Controllers;
 
@@ -25,7 +25,13 @@ public class CartController : ControllerBase
     [HttpPost("{userId}/items")]
     public async Task<IActionResult> AddItem(string userId, AddItemRequest request, CancellationToken ct)
     {
-        var cart = await _cartService.AddItemAsync(userId, request, ct);
+        var cart = await _cartService.AddItemAsync(
+            userId,
+            request.ProductId,
+            request.ProductName,
+            request.UnitPrice,
+            request.Quantity,
+            ct);
         return Ok(cart);
     }
 

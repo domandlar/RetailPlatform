@@ -1,24 +1,8 @@
 ﻿using RetailPlatform.Carts.Domain.Entities;
 using RetailPlatform.Carts.Domain.Repositories;
+using RetailPlatform.Carts.Domain.Services;
 
 namespace RetailPlatform.Carts.Application.Services;
-
-public interface ICartService
-{
-    Task<Cart?> GetCartAsync(string userId, CancellationToken ct = default);
-    Task<Cart> AddItemAsync(string userId, AddItemRequest request, CancellationToken ct = default);
-    Task<Cart?> UpdateItemAsync(string userId, Guid productId, int quantity, CancellationToken ct = default);
-    Task<bool> RemoveItemAsync(string userId, Guid productId, CancellationToken ct = default);
-    Task<bool> ClearCartAsync(string userId, CancellationToken ct = default);
-}
-public record AddItemRequest(
-    Guid ProductId,
-    string ProductName,
-    decimal UnitPrice,
-    int Quantity);
-
-public record UpdateItemRequest(int Quantity);
-
 
 public class CartService : ICartService
 {
@@ -32,7 +16,13 @@ public class CartService : ICartService
     public Task<Cart?> GetCartAsync(string userId, CancellationToken ct = default)
         => _repository.GetAsync(userId, ct);
 
-    public async Task<Cart> AddItemAsync(string userId, AddItemRequest request, CancellationToken ct = default)
+    public async Task<Cart> AddItemAsync(
+        string userId, 
+        Guid productId, 
+        string productName, 
+        decimal unitPrice,
+        int quantity,
+        CancellationToken ct = default)
     {
         var cart = await _repository.GetAsync(userId, ct);
 
@@ -40,19 +30,19 @@ public class CartService : ICartService
         {
             cart = Cart.Create(
                 userId,
-                request.ProductId,
-                request.ProductName,
-                request.UnitPrice,
-                request.Quantity);
+                productId,
+                productName,
+                unitPrice,
+                quantity);
         }
         else
         {
             cart.AddItem(new CartItem
             {
-                ProductId = request.ProductId,
-                ProductName = request.ProductName,
-                UnitPrice = request.UnitPrice,
-                Quantity = request.Quantity
+                ProductId = productId,
+                ProductName = productName,
+                UnitPrice = unitPrice,
+                Quantity = quantity
             });
         }
 
@@ -63,15 +53,25 @@ public class CartService : ICartService
     public async Task<Cart?> UpdateItemAsync(string userId, Guid productId, int quantity, CancellationToken ct = default)
     {
         var cart = await _repository.GetAsync(userId, ct);
-        if (cart is null) return null;
+        if (cart is null)
+        { 
+            return null;
+        }
 
         var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
-        if (item is null) return null;
+        if (item is null)
+        { 
+            return null;
+        }
 
         if (quantity <= 0)
+        {
             cart.Items.Remove(item);
+        }
         else
+        {
             item.Quantity = quantity;
+        }
 
         await _repository.SaveAsync(cart, ct);
         return cart;
