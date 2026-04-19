@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="RetailSolution.API/RetailPlatform.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Cart/">
+    <Project Path="RetailPlatform.Cart.Application/RetailPlatform.Cart.Application.csproj" />
+    <Project Path="RetailPlatform.Cart.Domain/RetailPlatform.Cart.Domain.csproj" />
+    <Project Path="RetailPlatform.Cart.Infrastructure/RetailPlatform.Cart.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/" />
+  <Folder Name="/tests/" />
+</Solution>
