@@ -1,11 +1,48 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
+using RetailPlatform.API.Auth;
 using RetailPlatform.Carts.Application;
 using RetailPlatform.Carts.Infrastructure;
 using Scalar.AspNetCore;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keycloakAuthority = builder.Configuration["Keycloak:Authority"]
+    ?? throw new InvalidOperationException("Keycloak:Authority is missing");
+var keycloakAudience = builder.Configuration["Keycloak:Audience"]
+    ?? throw new InvalidOperationException("Keycloak:Audience is missing");
+var keycloakMetadata = builder.Configuration["Keycloak:MetadataAddress"];
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = keycloakAuthority;
+        options.MetadataAddress = keycloakMetadata ?? $"{keycloakAuthority}/.well-known/openid-configuration";
+        options.RequireHttpsMetadata = false;   // DEV ONLY — Keycloak is HTTP in docker
+        options.Audience = keycloakAudience;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = keycloakAuthority,
+            ValidateAudience = false,  // Keycloak doesn't populate 'aud' by default — see note below
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            NameClaimType = "preferred_username",
+            RoleClaimType = "roles"
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("user", "admin"));
+});
+builder.Services.AddTransient<IClaimsTransformation, KeycloakRolesClaimsTransformer>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -26,6 +63,9 @@ builder.Services.AddHealthChecks()
         tags: new[] { "cache", "ready" });
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapOpenApi();
 app.MapScalarApiReference(options =>

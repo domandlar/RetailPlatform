@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RetailPlatform.Carts.Application.Contracts;
 using RetailPlatform.Carts.Domain.Services;
 
@@ -6,6 +7,7 @@ namespace RetailPlatform.API.Controllers;
 
 [ApiController]
 [Route("api/cart")]
+[Authorize]
 public class CartController : ControllerBase
 {
     private readonly ICartService _cartService;
