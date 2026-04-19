@@ -11,7 +11,9 @@
     <Project Path="RetailPlatform.Carts.Domain/RetailPlatform.Carts.Domain.csproj" />
     <Project Path="RetailPlatform.Carts.Infrastructure/RetailPlatform.Carts.Infrastructure.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="RetailPlatform.Carts.Domain.Tests/RetailPlatform.Carts.Domain.Tests.csproj" Id="5b2871e5-b7b4-491a-9281-e9bab0782448" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
