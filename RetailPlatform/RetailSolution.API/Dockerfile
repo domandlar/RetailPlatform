@@ -13,9 +13,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["RetailSolution.API/RetailPlatform.API.csproj", "RetailSolution.API/"]
-COPY ["RetailPlatform.Cart.Application/RetailPlatform.Cart.Application.csproj", "RetailPlatform.Cart.Application/"]
-COPY ["RetailPlatform.Cart.Domain/RetailPlatform.Cart.Domain.csproj", "RetailPlatform.Cart.Domain/"]
-COPY ["RetailPlatform.Cart.Infrastructure/RetailPlatform.Cart.Infrastructure.csproj", "RetailPlatform.Cart.Infrastructure/"]
+COPY ["RetailPlatform.Carts.Application/RetailPlatform.Carts.Application.csproj", "RetailPlatform.Carts.Application/"]
+COPY ["RetailPlatform.Carts.Domain/RetailPlatform.Carts.Domain.csproj", "RetailPlatform.Carts.Domain/"]
+COPY ["RetailPlatform.Carts.Infrastructure/RetailPlatform.Carts.Infrastructure.csproj", "RetailPlatform.Carts.Infrastructure/"]
 RUN dotnet restore "./RetailSolution.API/RetailPlatform.API.csproj"
 COPY . .
 WORKDIR "/src/RetailSolution.API"

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RetailPlatform.Cart.Application\RetailPlatform.Carts.Application.csproj" />
+    <ProjectReference Include="..\RetailPlatform.Carts.Application\RetailPlatform.Carts.Application.csproj" />
   </ItemGroup>
 
 </Project>

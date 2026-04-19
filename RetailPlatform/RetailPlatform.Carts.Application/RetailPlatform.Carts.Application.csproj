@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RetailPlatform.Cart.Domain\RetailPlatform.Carts.Domain.csproj" />
+    <ProjectReference Include="..\RetailPlatform.Carts.Domain\RetailPlatform.Carts.Domain.csproj" />
     <ProjectReference Include="..\RetailPlatform.Shared.Primitives\RetailPlatform.Shared.Primitives.csproj" />
   </ItemGroup>
 

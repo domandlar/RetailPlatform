@@ -7,9 +7,9 @@
   </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Carts/">
-    <Project Path="RetailPlatform.Cart.Application/RetailPlatform.Carts.Application.csproj" />
-    <Project Path="RetailPlatform.Cart.Domain/RetailPlatform.Carts.Domain.csproj" />
-    <Project Path="RetailPlatform.Cart.Infrastructure/RetailPlatform.Carts.Infrastructure.csproj" />
+    <Project Path="RetailPlatform.Carts.Application/RetailPlatform.Carts.Application.csproj" />
+    <Project Path="RetailPlatform.Carts.Domain/RetailPlatform.Carts.Domain.csproj" />
+    <Project Path="RetailPlatform.Carts.Infrastructure/RetailPlatform.Carts.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="RetailPlatform.Shared.Primitives/RetailPlatform.Shared.Primitives.csproj" Id="b5c2b2bf-294a-468c-b920-cd85bd848850" />
