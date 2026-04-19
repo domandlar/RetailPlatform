@@ -2,6 +2,9 @@ services:
 
   retailplatform.api:
     image: ${DOCKER_REGISTRY-}retailplatformapi
+    ports:
+      - "50000:8080"
+      - "50001:8081"
     build:
       context: .
       dockerfile: RetailSolution.API/Dockerfile
