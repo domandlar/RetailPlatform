@@ -1,5 +1,5 @@
-using RetailPlatform.Cart.Application;
-using RetailPlatform.Cart.Infrastructure;
+using RetailPlatform.Carts.Application;
+using RetailPlatform.Carts.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);

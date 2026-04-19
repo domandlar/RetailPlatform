@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RetailPlatform.Cart.Application\RetailPlatform.Cart.Application.csproj" />
-    <ProjectReference Include="..\RetailPlatform.Cart.Infrastructure\RetailPlatform.Cart.Infrastructure.csproj" />
+    <ProjectReference Include="..\RetailPlatform.Cart.Application\RetailPlatform.Carts.Application.csproj" />
+    <ProjectReference Include="..\RetailPlatform.Cart.Infrastructure\RetailPlatform.Carts.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RetailPlatform.Cart.Infrastructure;
+namespace RetailPlatform.Carts.Infrastructure;
 
 public static class DependencyInjection
 {

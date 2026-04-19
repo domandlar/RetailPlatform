@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RetailPlatform.Cart.Domain\RetailPlatform.Cart.Domain.csproj" />
+    <ProjectReference Include="..\RetailPlatform.Cart.Domain\RetailPlatform.Carts.Domain.csproj" />
   </ItemGroup>
 
 </Project>
