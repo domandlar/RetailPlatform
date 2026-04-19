@@ -1,6 +1,36 @@
 services:
+
   retailplatform.api:
     image: ${DOCKER_REGISTRY-}retailplatformapi
     build:
       context: .
       dockerfile: RetailSolution.API/Dockerfile
+    environment:
+      - ConnectionStrings__Redis=redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - retailplatform-network
+
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - retailplatform-network
+
+volumes:
+  redis-data:
+
+networks:
+  retailplatform-network:
+    driver: bridge

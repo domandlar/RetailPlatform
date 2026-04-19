@@ -1,4 +1,6 @@
+using MediatR;
 using RetailPlatform.Carts.Application;
+using RetailPlatform.Carts.Application.Commands.AddItem;
 using RetailPlatform.Carts.Infrastructure;
 using Scalar.AspNetCore;
 
@@ -44,9 +46,44 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
+var cart = app.MapGroup("/api/cart").WithTags("Cart");
+// POST /api/cart/{userId}/items
+cart.MapPost("/{userId}/items", async (
+    string userId,
+    AddItemRequest request,
+    IMediator mediator
+    //,
+    //IValidator<AddItemCommand> validator
+    ) =>
+{
+    var command = new AddItemCommand(
+        userId,
+        request.ProductId,
+        request.ProductName,
+        request.UnitPrice,
+        request.Quantity);
+
+    //var validation = await validator.ValidateAsync(command);
+    //if (!validation.IsValid)
+    //    return Results.ValidationProblem(validation.ToDictionary());
+
+    var result = await mediator.Send(command);
+    return Results.Ok(result);
+})
+.WithName("AddItem")
+.Produces(200)
+.Produces(400);
+
+
 app.Run();
 
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+record AddItemRequest(
+    Guid ProductId,
+    string ProductName,
+    decimal UnitPrice,
+    int Quantity);
